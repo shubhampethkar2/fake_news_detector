@@ -4,6 +4,7 @@ import re
 import joblib
 import streamlit as st
 import nltk
+import gdown
 from nltk.corpus import stopwords
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.model_selection import train_test_split
@@ -16,14 +17,19 @@ try:
 except LookupError:
     nltk.download("stopwords")
 
-# --- LOAD DATASET ---
-# Replace with actual dataset file paths
-fake_news_path = "Fake.csv"  # <-- Replace with actual path
-real_news_path = "True.csv"  # <-- Replace with actual path
+# --- NEW: Download Dataset from Google Drive ---
+true_news_url = "https://drive.google.com/uc?id=1MUyqmryTEEsVt0NF61wGvVxXo66sNJY4"  # True.csv
+fake_news_url = "https://drive.google.com/uc?id=1e1x7vUjDBqquC-lYjz6-BYDTCvpFViNe"  # Fake.csv
 
-# Load datasets
+true_news_path = "True.csv"
+fake_news_path = "Fake.csv"
+
+gdown.download(true_news_url, true_news_path, quiet=False)
+gdown.download(fake_news_url, fake_news_path, quiet=False)
+
+# --- LOAD DATASET ---
 df_fake = pd.read_csv(fake_news_path)
-df_real = pd.read_csv(real_news_path)
+df_real = pd.read_csv(true_news_path)
 
 # Assign labels
 df_fake["label"] = 1  # Fake news
